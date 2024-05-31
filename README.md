@@ -12,4 +12,4 @@ Agresif hisse taramasında;
 2. Ertesi günkü hissenin kapanışı bir önceki marubozu mumun kapanışının üstünde olmalıdır.
 3. CMF(Chaikin Money Flow) indikatörü 0,15 değerinin üzerinde olmalıdır. Sizin internette veya tradingview vb. programda bulacağınız CMF indikatörü formülü ile benim kullandığım biraz farklı. İndikatör üzerinde biraz değişiklik yapıp adına da CMI dedim. İsteyen olursa onu da ilerleyen zamanlarda açıklarım.
 4. 3 gün boyunca hisse morubozu üstünde hareket ederse taramada bu hisse çıkmaya devam edecektir. 3 gün sonunda yeni bir oluşum yoksa hisse artık taramada gözükmemektedir.
-Not: Bunları yaparken tamamıyla excel vba (makro) da yazdığım kodları kullanıyorum. Şu anlık excel vba  işimi görüyor ama 2-3 saat civarı sürüyor analiz. İlerleyen zamanlarda farklı bir program geliştirerek hızlandırmayı da planlıyorum.
+Not: 
