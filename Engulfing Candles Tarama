@@ -1,5 +1,6 @@
 // This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © dipavcisi0007
+//creator&author: @dipAVCISI007 on twitter
 
 //@version=5
 indicator('Engulfing Candles Tarama', overlay=true)
