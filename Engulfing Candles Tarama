@@ -1,6 +1,5 @@
 // This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
 // © dipavcisi0007
-//creator&author: @dipAVCISI007 on twitter
 
 //@version=5
 indicator('Engulfing Candles Tarama', overlay=true)
@@ -102,7 +101,7 @@ a06 = grupSec == '1' ? 'BIST:AEFES' : grupSec == '2' ? 'BIST:ARZUM' : grupSec ==
 a07 = grupSec == '1' ? 'BIST:AFYON' : grupSec == '2' ? 'BIST:ASELS' : grupSec == '3' ? 'BIST:BIMAS' : grupSec == '4' ? 'BIST:CONSE' : grupSec == '5' ? 'BIST:EGEEN' : grupSec == '6' ? 'BIST:FROTO' : grupSec == '7' ? 'BIST:HURGZ' : grupSec == '8' ? 'BIST:KARYE' : grupSec == '9' ? 'BIST:KUTPO' : grupSec == '10' ? 'BIST:MOBTL' : grupSec == '11' ? 'BIST:PASEU' : grupSec == '12' ? 'BIST:SANFM' : grupSec == '13' ? 'BIST:TCELL' : grupSec == '14' ? 'BIST:VAKFN'  : na
 a08 = grupSec == '1' ? 'BIST:AGESA' : grupSec == '2' ? 'BIST:ASGYO' : grupSec == '3' ? 'BIST:BINHO' : grupSec == '4' ? 'BIST:COSMO' : grupSec == '5' ? 'BIST:EGEPO' : grupSec == '6' ? 'BIST:FZLGY' : grupSec == '7' ? 'BIST:ICBCT' : grupSec == '8' ? 'BIST:KATMR' : grupSec == '9' ? 'BIST:KUVVA' : grupSec == '10' ? 'BIST:MOGAN' : grupSec == '11' ? 'BIST:PATEK' : grupSec == '12' ? 'BIST:SANKO' : grupSec == '13' ? 'BIST:TDGYO' : grupSec == '14' ? 'BIST:VAKKO'  : na
 a09 = grupSec == '1' ? 'BIST:AGHOL' : grupSec == '2' ? 'BIST:ASTOR' : grupSec == '3' ? 'BIST:BIOEN' : grupSec == '4' ? 'BIST:CRDFA' : grupSec == '5' ? 'BIST:EGGUB' : grupSec == '6' ? 'BIST:GARAN' : grupSec == '7' ? 'BIST:ICUGS' : grupSec == '8' ? 'BIST:KAYSE' : grupSec == '9' ? 'BIST:KUYAS' : grupSec == '10' ? 'BIST:MPARK' : grupSec == '11' ? 'BIST:PCILT' : grupSec == '12' ? 'BIST:SARKY' : grupSec == '13' ? 'BIST:TEKTU' : grupSec == '14' ? 'BIST:VANGD'  : na
-a10 = grupSec == '1' ? 'BIST:AGROT' : grupSec == '2' ? 'BIST:ASUZU' : grupSec == '3' ? 'BIST:BIZIM' : grupSec == '4' ? 'BIST:CRFSA' : grupSec == '5' ? 'BIST:EGPRO' : grupSec == '6' ? 'BIST:GARFA' : grupSec == '7' ? 'BIST:IDGYO' : grupSec == '8' ? 'BIST:KBORU' : grupSec == '9' ? 'BIST:KZBGY' : grupSec == '10' ? 'BIST:MRGYO' : grupSec == '11' ? 'BIST:PEGYO' : grupSec == '12' ? 'BIST:SASA' : grupSec == '13' ? 'BIST:TERA' : grupSec == '14' ? 'BIST:VBTYZ'  : na
+a10 = grupSec == '1' ? 'BIST:AGROT' : grupSec == '2' ? 'BIST:ASUZU' : grupSec == '3' ? 'BIST:BIZIM' : grupSec == '4' ? 'BIST:CRFSA' : grupSec == '5' ? 'BIST:EGPRO' : grupSec == '6' ? 'BIST:GARFA' : grupSec == '7' ? 'BIST:IDGYO' : grupSec == '8' ? 'BIST:KBORU' : grupSec == '9' ? 'BIST:KZBGY' : grupSec == '10' ? 'BIST:MRGYO' : grupSec == '11' ? 'BIST:PEHOL' : grupSec == '12' ? 'BIST:SASA' : grupSec == '13' ? 'BIST:TERA' : grupSec == '14' ? 'BIST:VBTYZ'  : na
 a11 = grupSec == '1' ? 'BIST:AGYO' : grupSec == '2' ? 'BIST:ATAGY' : grupSec == '3' ? 'BIST:BJKAS' : grupSec == '4' ? 'BIST:CUSAN' : grupSec == '5' ? 'BIST:EGSER' : grupSec == '6' ? 'BIST:GEDIK' : grupSec == '7' ? 'BIST:IEYHO' : grupSec == '8' ? 'BIST:KCAER' : grupSec == '9' ? 'BIST:KZGYO' : grupSec == '10' ? 'BIST:MRSHL' : grupSec == '11' ? 'BIST:PEKGY' : grupSec == '12' ? 'BIST:SAYAS' : grupSec == '13' ? 'BIST:TETMT' : grupSec == '14' ? 'BIST:VERTU'  : na
 a12 = grupSec == '1' ? 'BIST:AHGAZ' : grupSec == '2' ? 'BIST:ATAKP' : grupSec == '3' ? 'BIST:BLCYT' : grupSec == '4' ? 'BIST:CVKMD' : grupSec == '5' ? 'BIST:EKGYO' : grupSec == '6' ? 'BIST:GEDZA' : grupSec == '7' ? 'BIST:IHAAS' : grupSec == '8' ? 'BIST:KCHOL' : grupSec == '9' ? 'BIST:LIDER' : grupSec == '10' ? 'BIST:MSGYO' : grupSec == '11' ? 'BIST:PENGD' : grupSec == '12' ? 'BIST:SDTTR' : grupSec == '13' ? 'BIST:TEZOL' : grupSec == '14' ? 'BIST:VERUS'  : na
 a13 = grupSec == '1' ? 'BIST:AKBNK' : grupSec == '2' ? 'BIST:ATATP' : grupSec == '3' ? 'BIST:BMSCH' : grupSec == '4' ? 'BIST:CWENE' : grupSec == '5' ? 'BIST:EKIZ' : grupSec == '6' ? 'BIST:GENIL' : grupSec == '7' ? 'BIST:IHEVA' : grupSec == '8' ? 'BIST:KENT' : grupSec == '9' ? 'BIST:LIDFA' : grupSec == '10' ? 'BIST:MTRKS' : grupSec == '11' ? 'BIST:PENTA' : grupSec == '12' ? 'BIST:SEGYO' : grupSec == '13' ? 'BIST:TGSAS' : grupSec == '14' ? 'BIST:VESBE'  : na
@@ -239,3 +238,5 @@ if barstate.islast
 if str.length(scr_label) > 8
     alert(scr_label,alert.freq_once_per_bar_close)
 //------------------------------------------------------
+
+
