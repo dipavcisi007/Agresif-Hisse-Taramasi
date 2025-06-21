@@ -1,5 +1,5 @@
 //@version=4
-study(title="CMI", shorttitle="CMI Indicator", format=format.price, precision=2, resolution="")
+study(title="CMI CMF RSI", shorttitle="CMI CMF", format=format.price, precision=2, resolution="")
 length1 = input( 14 )
 price = close
 length = input(20, minval=1)
@@ -10,3 +10,16 @@ crsi=vrsi/500
 crsis=mf-crsi+0.1
 plot(crsis, color=#43A047, title="MI")
 hline(0, color=#787B86, title="Zero", linestyle=hline.style_dashed)
+
+
+var cumVol = 0.
+cumVol += nz(volume)
+
+ad1 = close==high and close==low or high==low ? 0 : ((2*close-low-high)/(high-low))*volume
+mf1 = sum(ad1, length)  / sum(volume, length)
+plot(mf1, color=#dd1a0c, title="MF")
+hline(0, color=#787B86, title="Zero", linestyle=hline.style_dashed)
+
+
+ 
+ 
