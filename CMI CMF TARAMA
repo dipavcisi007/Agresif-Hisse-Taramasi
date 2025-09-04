@@ -1,160 +1,160 @@
-//@version=5
-indicator("CMI CMF TARAMMA", shorttitle="CMI CMF TARAMA", format=format.price, precision=2, overlay=false)
+//@version=6
+indicator('CMI CMF TARAMMA', shorttitle = 'CMI CMF TARAMA', format = format.price, precision = 2, overlay = false)
 
 // === INPUTS ===
-length1 = input.int(14, "RSI Length")
-length = input.int(20, "MF Length")
+length1 = input.int(14, 'RSI Length')
+length = input.int(20, 'MF Length')
 price = close
 
 // === CMI ===
-ad = (close == high and close == low) or (high == low) ? 0.0 : ((close - open) / (high - low)) * volume
+ad = close == high and close == low or high == low ? 0.0 : (close - open) / (high - low) * volume
 mf = math.sum(ad, length) / math.sum(volume, length)
 vrsi = ta.rsi(price, length1)
 crsi = vrsi / 500
 crsis = mf - crsi + 0.1
 
-plot(crsis, color=color.green, title="MI")
-hline(0, color=color.gray, title="Zero_MI", linestyle=hline.style_dashed)
+plot(crsis, color = color.green, title = 'MI')
+hline(0, color = color.gray, title = 'Zero_MI', linestyle = hline.style_dashed)
 
 // === Cumulative Volume ===
 var float cumVol = na
 cumVol := na(cumVol) ? 0.0 : cumVol + volume
 
 // === MF1 ===
-ad1 = (close == high and close == low) or (high == low) ? 0.0 : ((2 * close - low - high) / (high - low)) * volume
+ad1 = close == high and close == low or high == low ? 0.0 : (2 * close - low - high) / (high - low) * volume
 mf1 = math.sum(ad1, length) / math.sum(volume, length)
 
-plot(mf1, color=color.red, title="MF")
-hline(0, color=color.gray, title="Zero_MF", linestyle=hline.style_dashed)
+plot(mf1, color = color.red, title = 'MF')
+hline(0, color = color.gray, title = 'Zero_MF', linestyle = hline.style_dashed)
 
 
- 
 
-cmi = 0.20 
-cmf =0.30
+
+cmi = 0.20
+cmf = 0.30
 
 //If current bar open is less than equal to the previous bar close AND current bar open is less than previous bar open AND current bar close is greater than previous bar open THEN True
 
-conditionCmf = ta.crossover(mf1,cmf)    
-conditionCmi  = crsis>cmi    
+conditionCmf = ta.crossover(mf1, cmf)
+conditionCmi = crsis > cmi
 
 
 
 var K1 = 0.0
-res = input.timeframe(title='Time Frame', defval='D')
- 
-plot(K1, linewidth=2, color=color.new(color.purple, 0), title='TSL')
+res = input.timeframe(title = 'Time Frame', defval = 'D')
+
+plot(K1, linewidth = 2, color = color.new(color.purple, 0), title = 'TSL')
 
 
 //bullishEngulfing/bearishEngulfing return a value of 1 or 0; if 1 then plot on chart, if 0 then don't plot
-plotshape(conditionCmf and conditionCmi   , style=shape.triangleup, location=location.belowbar, color=color.new(#43A047, 0), size=size.tiny)
+plotshape(conditionCmf and conditionCmi, style = shape.triangleup, location = location.belowbar, color = color.new(#43A047, 0), size = size.tiny)
 
 
 
 
 ////////////////////////
-grupSec = input.string(defval='1', options=['1', '2', '3', '4', '5','6','7','8','9','10','11','12','13','14','15'], group='Taraması yapılacak 40\'arlı gruplardan birini seçin', title='Grup seç')
-per = input.timeframe(defval='', title='PERİYOT',group = "Tarama yapmak istediğiniz periyotu seçin")
+grupSec = input.string(defval = '1', options = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'], group = 'Taraması yapılacak 40\'arlı gruplardan birini seçin', title = 'Grup seç')
+per = input.timeframe(defval = '', title = 'PERİYOT', group = 'Tarama yapmak istediğiniz periyotu seçin')
 
 
 func() =>
-   
+
     cond = conditionCmf and conditionCmi
-    
+
     [close, cond]
 
 
 //GRUP VE TARANACAK HİSSE SAYISINI AYNI ŞEKİLDE DİLEDİĞİNİZ GİBİ ARTIRABİLİRSİNİZ.
 
 
-a01 = grupSec == '1' ? 'BIST:A1CAP' : grupSec == '2' ? 'BIST:ANSGR' : grupSec == '3' ? 'BIST:BEYAZ' : grupSec == '4' ? 'BIST:CEMZY' : grupSec == '5' ? 'BIST:DURKN' : grupSec == '6' ? 'BIST:EUYO' : grupSec == '7' ? 'BIST:HALKB' : grupSec == '8' ? 'BIST:ISGYO' : grupSec == '9' ? 'BIST:KOPOL' : grupSec == '10' ? 'BIST:MARKA' : grupSec == '11' ? 'BIST:ONCSM' : grupSec == '12' ? 'BIST:POLTK' : grupSec == '13' ? 'BIST:SISE' : grupSec == '14' ? 'BIST:TOASO' : grupSec == '15' ? 'BIST:YBTAS' :  na
-a02 = grupSec == '1' ? 'BIST:ACSEL' : grupSec == '2' ? 'BIST:ARASE' : grupSec == '3' ? 'BIST:BFREN' : grupSec == '4' ? 'BIST:CEOEM' : grupSec == '5' ? 'BIST:DYOBY' : grupSec == '6' ? 'BIST:EYGYO' : grupSec == '7' ? 'BIST:HATEK' : grupSec == '8' ? 'BIST:ISKPL' : grupSec == '9' ? 'BIST:KORDS' : grupSec == '10' ? 'BIST:MARTI' : grupSec == '11' ? 'BIST:ONRYT' : grupSec == '12' ? 'BIST:PRDGS' : grupSec == '13' ? 'BIST:SKBNK' : grupSec == '14' ? 'BIST:TRCAS' : grupSec == '15' ? 'BIST:YEOTK' :  na
-a03 = grupSec == '1' ? 'BIST:ADEL' : grupSec == '2' ? 'BIST:ARCLK' : grupSec == '3' ? 'BIST:BIENY' : grupSec == '4' ? 'BIST:CIMSA' : grupSec == '5' ? 'BIST:DZGYO' : grupSec == '6' ? 'BIST:FADE' : grupSec == '7' ? 'BIST:HATSN' : grupSec == '8' ? 'BIST:ISKUR' : grupSec == '9' ? 'BIST:KOTON' : grupSec == '10' ? 'BIST:MAVI' : grupSec == '11' ? 'BIST:ORCAY' : grupSec == '12' ? 'BIST:PRKAB' : grupSec == '13' ? 'BIST:SKTAS' : grupSec == '14' ? 'BIST:TRGYO' : grupSec == '15' ? 'BIST:YESIL' :  na
-a04 = grupSec == '1' ? 'BIST:ADESE' : grupSec == '2' ? 'BIST:ARDYZ' : grupSec == '3' ? 'BIST:BIGCH' : grupSec == '4' ? 'BIST:CLEBI' : grupSec == '5' ? 'BIST:EBEBK' : grupSec == '6' ? 'BIST:FENER' : grupSec == '7' ? 'BIST:HDFGS' : grupSec == '8' ? 'BIST:ISMEN' : grupSec == '9' ? 'BIST:KOZAA' : grupSec == '10' ? 'BIST:MEDTR' : grupSec == '11' ? 'BIST:ORGE' : grupSec == '12' ? 'BIST:PRKME' : grupSec == '13' ? 'BIST:SKYLP' : grupSec == '14' ? 'BIST:TRILC' : grupSec == '15' ? 'BIST:YGGYO' :  na
-a05 = grupSec == '1' ? 'BIST:ADGYO' : grupSec == '2' ? 'BIST:ARENA' : grupSec == '3' ? 'BIST:BIMAS' : grupSec == '4' ? 'BIST:CMBTN' : grupSec == '5' ? 'BIST:ECILC' : grupSec == '6' ? 'BIST:FLAP' : grupSec == '7' ? 'BIST:HEDEF' : grupSec == '8' ? 'BIST:ISSEN' : grupSec == '9' ? 'BIST:KOZAL' : grupSec == '10' ? 'BIST:MEGAP' : grupSec == '11' ? 'BIST:ORMA' : grupSec == '12' ? 'BIST:PRZMA' : grupSec == '13' ? 'BIST:SKYMD' : grupSec == '14' ? 'BIST:TSGYO' : grupSec == '15' ? 'BIST:YGYO' :  na
-a06 = grupSec == '1' ? 'BIST:AEFES' : grupSec == '2' ? 'BIST:ARSAN' : grupSec == '3' ? 'BIST:BINBN' : grupSec == '4' ? 'BIST:CMENT' : grupSec == '5' ? 'BIST:ECZYT' : grupSec == '6' ? 'BIST:FMIZP' : grupSec == '7' ? 'BIST:HEKTS' : grupSec == '8' ? 'BIST:ISYAT' : grupSec == '9' ? 'BIST:KRDMA' : grupSec == '10' ? 'BIST:MEGMT' : grupSec == '11' ? 'BIST:OSMEN' : grupSec == '12' ? 'BIST:PSDTC' : grupSec == '13' ? 'BIST:SMART' : grupSec == '14' ? 'BIST:TSKB' : grupSec == '15' ? 'BIST:YIGIT' :  na
-a07 = grupSec == '1' ? 'BIST:AFYON' : grupSec == '2' ? 'BIST:ARTMS' : grupSec == '3' ? 'BIST:BINHO' : grupSec == '4' ? 'BIST:CONSE' : grupSec == '5' ? 'BIST:EDATA' : grupSec == '6' ? 'BIST:FONET' : grupSec == '7' ? 'BIST:HKTM' : grupSec == '8' ? 'BIST:IZENR' : grupSec == '9' ? 'BIST:KRDMB' : grupSec == '10' ? 'BIST:MEKAG' : grupSec == '11' ? 'BIST:OSTIM' : grupSec == '12' ? 'BIST:PSGYO' : grupSec == '13' ? 'BIST:SMRTG' : grupSec == '14' ? 'BIST:TSPOR' : grupSec == '15' ? 'BIST:YKBNK' :  na
-a08 = grupSec == '1' ? 'BIST:AGESA' : grupSec == '2' ? 'BIST:ARZUM' : grupSec == '3' ? 'BIST:BIOEN' : grupSec == '4' ? 'BIST:COSMO' : grupSec == '5' ? 'BIST:EDIP' : grupSec == '6' ? 'BIST:FORMT' : grupSec == '7' ? 'BIST:HLGYO' : grupSec == '8' ? 'BIST:IZFAS' : grupSec == '9' ? 'BIST:KRDMD' : grupSec == '10' ? 'BIST:MEPET' : grupSec == '11' ? 'BIST:OTKAR' : grupSec == '12' ? 'BIST:QNBFK' : grupSec == '13' ? 'BIST:SNGYO' : grupSec == '14' ? 'BIST:TTKOM' : grupSec == '15' ? 'BIST:YKSLN' :  na
-a09 = grupSec == '1' ? 'BIST:AGHOL' : grupSec == '2' ? 'BIST:ASELS' : grupSec == '3' ? 'BIST:BIZIM' : grupSec == '4' ? 'BIST:CRDFA' : grupSec == '5' ? 'BIST:EFORC' : grupSec == '6' ? 'BIST:FORTE' : grupSec == '7' ? 'BIST:HOROZ' : grupSec == '8' ? 'BIST:IZINV' : grupSec == '9' ? 'BIST:KRGYO' : grupSec == '10' ? 'BIST:MERCN' : grupSec == '11' ? 'BIST:OTTO' : grupSec == '12' ? 'BIST:QNBTR' : grupSec == '13' ? 'BIST:SNICA' : grupSec == '14' ? 'BIST:TTRAK' : grupSec == '15' ? 'BIST:YONGA' :  na
-a10 = grupSec == '1' ? 'BIST:AGROT' : grupSec == '2' ? 'BIST:ASGYO' : grupSec == '3' ? 'BIST:BJKAS' : grupSec == '4' ? 'BIST:CRFSA' : grupSec == '5' ? 'BIST:EGEEN' : grupSec == '6' ? 'BIST:FRIGO' : grupSec == '7' ? 'BIST:HRKET' : grupSec == '8' ? 'BIST:IZMDC' : grupSec == '9' ? 'BIST:KRONT' : grupSec == '10' ? 'BIST:MERIT' : grupSec == '11' ? 'BIST:OYAKC' : grupSec == '12' ? 'BIST:QUAGR' : grupSec == '13' ? 'BIST:SNKRN' : grupSec == '14' ? 'BIST:TUCLK' : grupSec == '15' ? 'BIST:YUNSA' :  na
-a11 = grupSec == '1' ? 'BIST:AGYO' : grupSec == '2' ? 'BIST:ASTOR' : grupSec == '3' ? 'BIST:BLCYT' : grupSec == '4' ? 'BIST:CUSAN' : grupSec == '5' ? 'BIST:EGEPO' : grupSec == '6' ? 'BIST:FROTO' : grupSec == '7' ? 'BIST:HTTBT' : grupSec == '8' ? 'BIST:JANTS' : grupSec == '9' ? 'BIST:KRPLS' : grupSec == '10' ? 'BIST:MERKO' : grupSec == '11' ? 'BIST:OYAYO' : grupSec == '12' ? 'BIST:RALYH' : grupSec == '13' ? 'BIST:SNPAM' : grupSec == '14' ? 'BIST:TUKAS' : grupSec == '15' ? 'BIST:YYAPI' :  na
-a12 = grupSec == '1' ? 'BIST:AHGAZ' : grupSec == '2' ? 'BIST:ASUZU' : grupSec == '3' ? 'BIST:BMSCH' : grupSec == '4' ? 'BIST:CVKMD' : grupSec == '5' ? 'BIST:EGGUB' : grupSec == '6' ? 'BIST:FZLGY' : grupSec == '7' ? 'BIST:HUBVC' : grupSec == '8' ? 'BIST:KAPLM' : grupSec == '9' ? 'BIST:KRSTL' : grupSec == '10' ? 'BIST:METRO' : grupSec == '11' ? 'BIST:OYLUM' : grupSec == '12' ? 'BIST:RAYSG' : grupSec == '13' ? 'BIST:SODSN' : grupSec == '14' ? 'BIST:TUPRS' : grupSec == '15' ? 'BIST:YYLGD' :  na
-a13 = grupSec == '1' ? 'BIST:AHSGY' : grupSec == '2' ? 'BIST:ATAGY' : grupSec == '3' ? 'BIST:BMSTL' : grupSec == '4' ? 'BIST:CWENE' : grupSec == '5' ? 'BIST:EGPRO' : grupSec == '6' ? 'BIST:GARAN' : grupSec == '7' ? 'BIST:HUNER' : grupSec == '8' ? 'BIST:KAREL' : grupSec == '9' ? 'BIST:KRTEK' : grupSec == '10' ? 'BIST:METUR' : grupSec == '11' ? 'BIST:OYYAT' : grupSec == '12' ? 'BIST:REEDR' : grupSec == '13' ? 'BIST:SOKE' : grupSec == '14' ? 'BIST:TUREX' : grupSec == '15' ? 'BIST:ZEDUR' :  na
-a14 = grupSec == '1' ? 'BIST:AKBNK' : grupSec == '2' ? 'BIST:ATAKP' : grupSec == '3' ? 'BIST:BNTAS' : grupSec == '4' ? 'BIST:TRHOL' : grupSec == '5' ? 'BIST:EGSER' : grupSec == '6' ? 'BIST:GARFA' : grupSec == '7' ? 'BIST:HURGZ' : grupSec == '8' ? 'BIST:KARSN' : grupSec == '9' ? 'BIST:KRVGD' : grupSec == '10' ? 'BIST:MGROS' : grupSec == '11' ? 'BIST:OZATD' : grupSec == '12' ? 'BIST:RGYAS' : grupSec == '13' ? 'BIST:SOKM' : grupSec == '14' ? 'BIST:TURGG' : grupSec == '15' ? 'BIST:ZOREN' :  na
-a15 = grupSec == '1' ? 'BIST:AKCNS' : grupSec == '2' ? 'BIST:ATATP' : grupSec == '3' ? 'BIST:BOBET' : grupSec == '4' ? 'BIST:DAGI' : grupSec == '5' ? 'BIST:EKGYO' : grupSec == '6' ? 'BIST:GEDIK' : grupSec == '7' ? 'BIST:ICBCT' : grupSec == '8' ? 'BIST:KARTN' : grupSec == '9' ? 'BIST:KSTUR' : grupSec == '10' ? 'BIST:MHRGY' : grupSec == '11' ? 'BIST:OZGYO' : grupSec == '12' ? 'BIST:RNPOL' : grupSec == '13' ? 'BIST:SONME' : grupSec == '14' ? 'BIST:TURSG' : grupSec == '15' ? 'BIST:ZRGYO' :  na
-a16 = grupSec == '1' ? 'BIST:AKENR' : grupSec == '2' ? 'BIST:ATEKS' : grupSec == '3' ? 'BIST:BORLS' : grupSec == '4' ? 'BIST:TRHOL' : grupSec == '5' ? 'BIST:EKIZ' : grupSec == '6' ? 'BIST:GEDZA' : grupSec == '7' ? 'BIST:ICUGS' : grupSec == '8' ? 'BIST:KARYE' : grupSec == '9' ? 'BIST:KTLEV' : grupSec == '10' ? 'BIST:MIATK' : grupSec == '11' ? 'BIST:OZKGY' : grupSec == '12' ? 'BIST:RODRG' : grupSec == '13' ? 'BIST:SRVGY' : grupSec == '14' ? 'BIST:UFUK' : grupSec == '15' ? 'BIST:AKFIS'  :na
-a17 = grupSec == '1' ? 'BIST:AKFGY' : grupSec == '2' ? 'BIST:ATLAS' : grupSec == '3' ? 'BIST:BORSK' : grupSec == '4' ? 'BIST:DARDL' : grupSec == '5' ? 'BIST:EKOS' : grupSec == '6' ? 'BIST:GENIL' : grupSec == '7' ? 'BIST:IDGYO' : grupSec == '8' ? 'BIST:KATMR' : grupSec == '9' ? 'BIST:KTSKR' : grupSec == '10' ? 'BIST:MMCAS' : grupSec == '11' ? 'BIST:OZRDN' : grupSec == '12' ? 'BIST:ROYAL' : grupSec == '13' ? 'BIST:SUMAS' : grupSec == '14' ? 'BIST:ULAS' : grupSec == '15' ? 'BIST:ARMGD': na
-a18 = grupSec == '1' ? 'BIST:AKFYE' : grupSec == '2' ? 'BIST:ATSYH' : grupSec == '3' ? 'BIST:BOSSA' : grupSec == '4' ? 'BIST:DCTTR' : grupSec == '5' ? 'BIST:EKSUN' : grupSec == '6' ? 'BIST:GENTS' : grupSec == '7' ? 'BIST:IEYHO' : grupSec == '8' ? 'BIST:KAYSE' : grupSec == '9' ? 'BIST:KUTPO' : grupSec == '10' ? 'BIST:MNDRS' : grupSec == '11' ? 'BIST:OZSUB' : grupSec == '12' ? 'BIST:RTALB' : grupSec == '13' ? 'BIST:SUNTK' : grupSec == '14' ? 'BIST:ULKER' : grupSec == '15' ? 'BIST:BALSU': na
-a19 = grupSec == '1' ? 'BIST:AKGRT' : grupSec == '2' ? 'BIST:AVGYO' : grupSec == '3' ? 'BIST:BRISA' : grupSec == '4' ? 'BIST:DENGE' : grupSec == '5' ? 'BIST:ELITE' : grupSec == '6' ? 'BIST:GEREL' : grupSec == '7' ? 'BIST:IHAAS' : grupSec == '8' ? 'BIST:KBORU' : grupSec == '9' ? 'BIST:KUVVA' : grupSec == '10' ? 'BIST:MNDTR' : grupSec == '11' ? 'BIST:OZYSR' : grupSec == '12' ? 'BIST:RUBNS' : grupSec == '13' ? 'BIST:SURGY' : grupSec == '14' ? 'BIST:ULUFA' :  grupSec == '15' ? 'BIST:BESLR':na
-a20 = grupSec == '1' ? 'BIST:AKMGY' : grupSec == '2' ? 'BIST:AVHOL' : grupSec == '3' ? 'BIST:BRKO' : grupSec == '4' ? 'BIST:DERHL' : grupSec == '5' ? 'BIST:EMKEL' : grupSec == '6' ? 'BIST:GESAN' : grupSec == '7' ? 'BIST:IHEVA' : grupSec == '8' ? 'BIST:KCAER' : grupSec == '9' ? 'BIST:KUYAS' : grupSec == '10' ? 'BIST:MOBTL' : grupSec == '11' ? 'BIST:PAGYO' : grupSec == '12' ? 'BIST:RYGYO' : grupSec == '13' ? 'BIST:SUWEN' : grupSec == '14' ? 'BIST:ULUSE' : grupSec == '15' ? 'BIST:DSTKF': na
-a21 = grupSec == '1' ? 'BIST:AKSA' : grupSec == '2' ? 'BIST:AVOD' : grupSec == '3' ? 'BIST:BRKSN' : grupSec == '4' ? 'BIST:DERIM' : grupSec == '5' ? 'BIST:EMNIS' : grupSec == '6' ? 'BIST:GIPTA' : grupSec == '7' ? 'BIST:IHGZT' : grupSec == '8' ? 'BIST:KCHOL' : grupSec == '9' ? 'BIST:KZBGY' : grupSec == '10' ? 'BIST:MOGAN' : grupSec == '11' ? 'BIST:PAMEL' : grupSec == '12' ? 'BIST:RYSAS' : grupSec == '13' ? 'BIST:TABGD' : grupSec == '14' ? 'BIST:ULUUN' : grupSec == '15' ? 'BIST:GLRMK': na
-a22 = grupSec == '1' ? 'BIST:AKSEN' : grupSec == '2' ? 'BIST:AVPGY' : grupSec == '3' ? 'BIST:BRKVY' : grupSec == '4' ? 'BIST:DESA' : grupSec == '5' ? 'BIST:ENERY' : grupSec == '6' ? 'BIST:GLBMD' : grupSec == '7' ? 'BIST:IHLAS' : grupSec == '8' ? 'BIST:KENT' : grupSec == '9' ? 'BIST:KZGYO' : grupSec == '10' ? 'BIST:MPARK' : grupSec == '11' ? 'BIST:PAPIL' : grupSec == '12' ? 'BIST:SAFKR' : grupSec == '13' ? 'BIST:TARKM' : grupSec == '14' ? 'BIST:UMPAS' : grupSec == '15' ? 'BIST:KLYPV': na
-a23 = grupSec == '1' ? 'BIST:AKSGY' : grupSec == '2' ? 'BIST:AVTUR' : grupSec == '3' ? 'BIST:BRLSM' : grupSec == '4' ? 'BIST:DESPC' : grupSec == '5' ? 'BIST:ENJSA' : grupSec == '6' ? 'BIST:GLCVY' : grupSec == '7' ? 'BIST:IHLGM' : grupSec == '8' ? 'BIST:KERVN' : grupSec == '9' ? 'BIST:LIDER' : grupSec == '10' ? 'BIST:MRGYO' : grupSec == '11' ? 'BIST:PARSN' : grupSec == '12' ? 'BIST:SAHOL' : grupSec == '13' ? 'BIST:TATEN' : grupSec == '14' ? 'BIST:UNLU' :grupSec == '15' ? 'BIST:MOPAS': na
-a24 = grupSec == '1' ? 'BIST:AKSUE' : grupSec == '2' ? 'BIST:AYCES' : grupSec == '3' ? 'BIST:BRMEN' : grupSec == '4' ? 'BIST:DEVA' : grupSec == '5' ? 'BIST:ENKAI' : grupSec == '6' ? 'BIST:GLRYH' : grupSec == '7' ? 'BIST:IHYAY' : grupSec == '8' ?                                  'BIST:LIDFA' : grupSec == '10' ? 'BIST:MRSHL' : grupSec == '11' ? 'BIST:PASEU' : grupSec == '12' ? 'BIST:SAMAT' : grupSec == '13' ? 'BIST:TATGD' : grupSec == '14' ? 'BIST:USAK' : grupSec == '15' ? 'BIST:A1YEN': na
-a25 = grupSec == '1' ? 'BIST:AKYHO' : grupSec == '2' ? 'BIST:AYDEM' : grupSec == '3' ? 'BIST:BRSAN' : grupSec == '4' ? 'BIST:DGATE' : grupSec == '5' ? 'BIST:ENSRI' : grupSec == '6' ? 'BIST:GLYHO' : grupSec == '7' ? 'BIST:IMASM' : grupSec == '8' ? 'BIST:KFEIN' : grupSec == '9' ? 'BIST:LILAK' : grupSec == '10' ? 'BIST:MSGYO' : grupSec == '11' ? 'BIST:PATEK' : grupSec == '12' ? 'BIST:SANEL' : grupSec == '13' ? 'BIST:TAVHL' : grupSec == '14' ? 'BIST:VAKBN' : grupSec == '15' ? 'BIST:BIGEN': na
-a26 = grupSec == '1' ? 'BIST:ALARK' : grupSec == '2' ? 'BIST:AYEN' : grupSec == '3' ? 'BIST:BRYAT' : grupSec == '4' ? 'BIST:DGGYO' : grupSec == '5' ? 'BIST:ENTRA' : grupSec == '6' ? 'BIST:GMTAS' : grupSec == '7' ? 'BIST:INDES' : grupSec == '8' ? 'BIST:KGYO' : grupSec == '9' ? 'BIST:LINK' : grupSec == '10' ? 'BIST:MTRKS' : grupSec == '11' ? 'BIST:PCILT' : grupSec == '12' ? 'BIST:SANFM' : grupSec == '13' ? 'BIST:TBORG' : grupSec == '14' ? 'BIST:VAKFN' : grupSec == '15' ? 'BIST:BULGS': na
-a27 = grupSec == '1' ? 'BIST:ALBRK' : grupSec == '2' ? 'BIST:AYES' : grupSec == '3' ? 'BIST:BSOKE' : grupSec == '4' ? 'BIST:DGNMO' : grupSec == '5' ? 'BIST:EPLAS' : grupSec == '6' ? 'BIST:GOKNR' : grupSec == '7' ? 'BIST:INFO' : grupSec == '8' ? 'BIST:KIMMR' : grupSec == '9' ? 'BIST:LKMNH' : grupSec == '10' ? 'BIST:MTRYO' : grupSec == '11' ? 'BIST:TEHOL' : grupSec == '12' ? 'BIST:SANKO' : grupSec == '13' ? 'BIST:TCELL' : grupSec == '14' ? 'BIST:VAKKO' : grupSec == '15' ? 'BIST:CGCAM': na
-a28 = grupSec == '1' ? 'BIST:ALCAR' : grupSec == '2' ? 'BIST:AYGAZ' : grupSec == '3' ? 'BIST:BTCIM' : grupSec == '4' ? 'BIST:DIRIT' : grupSec == '5' ? 'BIST:ERBOS' : grupSec == '6' ? 'BIST:GOLTS' : grupSec == '7' ? 'BIST:INGRM' : grupSec == '8' ? 'BIST:KLGYO' : grupSec == '9' ? 'BIST:LMKDC' : grupSec == '10' ? 'BIST:MZHLD' : grupSec == '11' ? 'BIST:PEKGY' : grupSec == '12' ? 'BIST:SARKY' : grupSec == '13' ? 'BIST:TCKRC' : grupSec == '14' ? 'BIST:VANGD' : grupSec == '15' ? 'BIST:EGEGY': na
-a29 = grupSec == '1' ? 'BIST:ALCTL' : grupSec == '2' ? 'BIST:AZTEK' : grupSec == '3' ? 'BIST:BUCIM' : grupSec == '4' ? 'BIST:DITAS' : grupSec == '5' ? 'BIST:ERCB' : grupSec == '6' ? 'BIST:GOODY' : grupSec == '7' ? 'BIST:INTEK' : grupSec == '8' ? 'BIST:KLKIM' : grupSec == '9' ? 'BIST:LOGO' : grupSec == '10' ? 'BIST:NATEN' : grupSec == '11' ? 'BIST:PENGD' : grupSec == '12' ? 'BIST:SASA' : grupSec == '13' ? 'BIST:TDGYO' : grupSec == '14' ? 'BIST:VBTYZ' :  grupSec == '15' ? 'BIST:ENDAE':na
-a30 = grupSec == '1' ? 'BIST:ALFAS' : grupSec == '2' ? 'BIST:BAGFS' : grupSec == '3' ? 'BIST:BURCE' : grupSec == '4' ? 'BIST:DMRGD' : grupSec == '5' ? 'BIST:EREGL' : grupSec == '6' ? 'BIST:GOZDE' : grupSec == '7' ? 'BIST:INTEM' : grupSec == '8' ? 'BIST:KLMSN' : grupSec == '9' ? 'BIST:LRSHO' : grupSec == '10' ? 'BIST:NETAS' : grupSec == '11' ? 'BIST:PENTA' : grupSec == '12' ? 'BIST:SAYAS' : grupSec == '13' ? 'BIST:TEKTU' : grupSec == '14' ? 'BIST:VERTU' : grupSec == '15' ? 'BIST:RUZYE': na
-a31 = grupSec == '1' ? 'BIST:ALGYO' : grupSec == '2' ? 'BIST:BAHKM' : grupSec == '3' ? 'BIST:BURVA' : grupSec == '4' ? 'BIST:DMSAS' : grupSec == '5' ? 'BIST:ERSU' : grupSec == '6' ? 'BIST:GRNYO' : grupSec == '7' ? 'BIST:INVEO' : grupSec == '8' ? 'BIST:KLNMA' : grupSec == '9' ? 'BIST:LUKSK' : grupSec == '10' ? 'BIST:NIBAS' : grupSec == '11' ? 'BIST:PETKM' : grupSec == '12' ? 'BIST:SDTTR' : grupSec == '13' ? 'BIST:TERA' : grupSec == '14' ? 'BIST:VERUS' : grupSec == '15' ? 'BIST:SERNT': na
-a32 = grupSec == '1' ? 'BIST:ALKA' : grupSec == '2' ? 'BIST:BAKAB' : grupSec == '3' ? 'BIST:BVSAN' : grupSec == '4' ? 'BIST:DNISI' : grupSec == '5' ? 'BIST:ESCAR' : grupSec == '6' ? 'BIST:GRSEL' : grupSec == '7' ? 'BIST:INVES' : grupSec == '8' ? 'BIST:KLRHO' : grupSec == '9' ? 'BIST:LYDHO' : grupSec == '10' ? 'BIST:NTGAZ' : grupSec == '11' ? 'BIST:PETUN' : grupSec == '12' ? 'BIST:SEGMN' : grupSec == '13' ? 'BIST:TEZOL' : grupSec == '14' ? 'BIST:VESBE' :  grupSec == '15' ? 'BIST:SMRVA':na
-a33 = grupSec == '1' ? 'BIST:ALKIM' : grupSec == '2' ? 'BIST:BALAT' : grupSec == '3' ? 'BIST:BYDNR' : grupSec == '4' ? 'BIST:DOAS' : grupSec == '5' ? 'BIST:ESCOM' : grupSec == '6' ? 'BIST:GRTHO' : grupSec == '7' ? 'BIST:IPEKE' : grupSec == '8' ? 'BIST:KLSER' : grupSec == '9' ? 'BIST:LYDYE' : grupSec == '10' ? 'BIST:NTHOL' : grupSec == '11' ? 'BIST:PGSUS' : grupSec == '12' ? 'BIST:SEGYO' : grupSec == '13' ? 'BIST:TGSAS' : grupSec == '14' ? 'BIST:VESTL' :  grupSec == '15' ? 'BIST:VSNMD':na
-a34 = grupSec == '1' ? 'BIST:ALKLC' : grupSec == '2' ? 'BIST:BANVT' : grupSec == '3' ? 'BIST:CANTE' : grupSec == '4' ? 'BIST:DOBUR' : grupSec == '5' ? 'BIST:ESEN' : grupSec == '6' ? 'BIST:GSDDE' : grupSec == '7' ? 'BIST:ISATR' : grupSec == '8' ? 'BIST:KLSYN' : grupSec == '9' ? 'BIST:MAALT' : grupSec == '10' ? 'BIST:NUGYO' : grupSec == '11' ? 'BIST:PINSU' : grupSec == '12' ? 'BIST:SEKFK' : grupSec == '13' ? 'BIST:THYAO' : grupSec == '14' ? 'BIST:VKFYO' :  na
-a35 = grupSec == '1' ? 'BIST:ALMAD' : grupSec == '2' ? 'BIST:BARMA' : grupSec == '3' ? 'BIST:CASA' : grupSec == '4' ? 'BIST:DOCO' : grupSec == '5' ? 'BIST:ETILR' : grupSec == '6' ? 'BIST:GSDHO' : grupSec == '7' ? 'BIST:ISBIR' : grupSec == '8' ? 'BIST:KMPUR' : grupSec == '9' ? 'BIST:MACKO' : grupSec == '10' ? 'BIST:NUHCM' : grupSec == '11' ? 'BIST:PKART' : grupSec == '12' ? 'BIST:SEKUR' : grupSec == '13' ? 'BIST:TKFEN' : grupSec == '14' ? 'BIST:VKGYO' :  na
-a36 = grupSec == '1' ? 'BIST:ALTNY' : grupSec == '2' ? 'BIST:BASCM' : grupSec == '3' ? 'BIST:CATES' : grupSec == '4' ? 'BIST:DOFER' : grupSec == '5' ? 'BIST:ETYAT' : grupSec == '6' ? 'BIST:GSRAY' : grupSec == '7' ? 'BIST:ISBTR' : grupSec == '8' ? 'BIST:KNFRT' : grupSec == '9' ? 'BIST:MAGEN' : grupSec == '10' ? 'BIST:OBAMS' : grupSec == '11' ? 'BIST:PKENT' : grupSec == '12' ? 'BIST:SELEC' : grupSec == '13' ? 'BIST:TKNSA' : grupSec == '14' ? 'BIST:VKING' :  na
-a37 = grupSec == '1' ? 'BIST:ALVES' : grupSec == '2' ? 'BIST:BASGZ' : grupSec == '3' ? 'BIST:CCOLA' : grupSec == '4' ? 'BIST:DOGUB' : grupSec == '5' ? 'BIST:EUHOL' : grupSec == '6' ? 'BIST:GUBRF' : grupSec == '7' ? 'BIST:ISCTR' : grupSec == '8' ? 'BIST:KOCMT' : grupSec == '9' ? 'BIST:MAKIM' : grupSec == '10' ? 'BIST:OBASE' : grupSec == '11' ? 'BIST:PLTUR' : grupSec == '12' ? 'BIST:SELGD' : grupSec == '13' ? 'BIST:TLMAN' : grupSec == '14' ? 'BIST:VRGYO' :  na
-a38 = grupSec == '1' ? 'BIST:ANELE' : grupSec == '2' ? 'BIST:BAYRK' : grupSec == '3' ? 'BIST:CELHA' : grupSec == '4' ? 'BIST:DOHOL' : grupSec == '5' ? 'BIST:EUKYO' : grupSec == '6' ? 'BIST:GUNDG' : grupSec == '7' ? 'BIST:ISDMR' : grupSec == '8' ? 'BIST:KONKA' : grupSec == '9' ? 'BIST:MAKTK' : grupSec == '10' ? 'BIST:ODAS' : grupSec == '11' ? 'BIST:PNLSN' : grupSec == '12' ? 'BIST:SELVA' : grupSec == '13' ? 'BIST:TMPOL' : grupSec == '14' ? 'BIST:YAPRK' :  na
-a39 = grupSec == '1' ? 'BIST:ANGEN' : grupSec == '2' ? 'BIST:BEGYO' : grupSec == '3' ? 'BIST:CEMAS' : grupSec == '4' ? 'BIST:DOKTA' : grupSec == '5' ? 'BIST:EUPWR' : grupSec == '6' ? 'BIST:GWIND' : grupSec == '7' ? 'BIST:ISFIN' : grupSec == '8' ? 'BIST:KONTR' : grupSec == '9' ? 'BIST:MANAS' : grupSec == '10' ? 'BIST:ODINE' : grupSec == '11' ? 'BIST:PNSUT' : grupSec == '12' ? 'BIST:SEYKM' : grupSec == '13' ? 'BIST:TMSN' : grupSec == '14' ? 'BIST:YATAS' :  na
-a40 = grupSec == '1' ? 'BIST:ANHYT' : grupSec == '2' ? 'BIST:BERA' : grupSec == '3' ? 'BIST:CEMTS' : grupSec == '4' ? 'BIST:DURDO' : grupSec == '5' ? 'BIST:EUREN' : grupSec == '6' ? 'BIST:GZNMI' : grupSec == '7' ? 'BIST:ISGSY' : grupSec == '8' ? 'BIST:KONYA' : grupSec == '9' ? 'BIST:MARBL' : grupSec == '10' ? 'BIST:OFSYM' : grupSec == '11' ? 'BIST:POLHO' : grupSec == '12' ? 'BIST:SILVR' : grupSec == '13' ? 'BIST:TNZTP' : grupSec == '14' ? 'BIST:YAYLA' :  na
+a01 = grupSec == '1' ? 'BIST:A1CAP' : grupSec == '2' ? 'BIST:ANSGR' : grupSec == '3' ? 'BIST:BEYAZ' : grupSec == '4' ? 'BIST:CEMZY' : grupSec == '5' ? 'BIST:DURKN' : grupSec == '6' ? 'BIST:EUYO' : grupSec == '7' ? 'BIST:HALKB' : grupSec == '8' ? 'BIST:ISGYO' : grupSec == '9' ? 'BIST:KOPOL' : grupSec == '10' ? 'BIST:MARKA' : grupSec == '11' ? 'BIST:ONCSM' : grupSec == '12' ? 'BIST:POLTK' : grupSec == '13' ? 'BIST:SISE' : grupSec == '14' ? 'BIST:TOASO' : grupSec == '15' ? 'BIST:YBTAS' : na
+a02 = grupSec == '1' ? 'BIST:ACSEL' : grupSec == '2' ? 'BIST:ARASE' : grupSec == '3' ? 'BIST:BFREN' : grupSec == '4' ? 'BIST:CEOEM' : grupSec == '5' ? 'BIST:DYOBY' : grupSec == '6' ? 'BIST:EYGYO' : grupSec == '7' ? 'BIST:HATEK' : grupSec == '8' ? 'BIST:ISKPL' : grupSec == '9' ? 'BIST:KORDS' : grupSec == '10' ? 'BIST:MARTI' : grupSec == '11' ? 'BIST:ONRYT' : grupSec == '12' ? 'BIST:PRDGS' : grupSec == '13' ? 'BIST:SKBNK' : grupSec == '14' ? 'BIST:TRCAS' : grupSec == '15' ? 'BIST:YEOTK' : na
+a03 = grupSec == '1' ? 'BIST:ADEL' : grupSec == '2' ? 'BIST:ARCLK' : grupSec == '3' ? 'BIST:BIENY' : grupSec == '4' ? 'BIST:CIMSA' : grupSec == '5' ? 'BIST:DZGYO' : grupSec == '6' ? 'BIST:FADE' : grupSec == '7' ? 'BIST:HATSN' : grupSec == '8' ? 'BIST:ISKUR' : grupSec == '9' ? 'BIST:KOTON' : grupSec == '10' ? 'BIST:MAVI' : grupSec == '11' ? 'BIST:ORCAY' : grupSec == '12' ? 'BIST:PRKAB' : grupSec == '13' ? 'BIST:SKTAS' : grupSec == '14' ? 'BIST:TRGYO' : grupSec == '15' ? 'BIST:YESIL' : na
+a04 = grupSec == '1' ? 'BIST:ADESE' : grupSec == '2' ? 'BIST:ARDYZ' : grupSec == '3' ? 'BIST:BIGCH' : grupSec == '4' ? 'BIST:CLEBI' : grupSec == '5' ? 'BIST:EBEBK' : grupSec == '6' ? 'BIST:FENER' : grupSec == '7' ? 'BIST:HDFGS' : grupSec == '8' ? 'BIST:ISMEN' : grupSec == '9' ? 'BIST:KOZAA' : grupSec == '10' ? 'BIST:MEDTR' : grupSec == '11' ? 'BIST:ORGE' : grupSec == '12' ? 'BIST:PRKME' : grupSec == '13' ? 'BIST:SKYLP' : grupSec == '14' ? 'BIST:TRILC' : grupSec == '15' ? 'BIST:YGGYO' : na
+a05 = grupSec == '1' ? 'BIST:ADGYO' : grupSec == '2' ? 'BIST:ARENA' : grupSec == '3' ? 'BIST:BIMAS' : grupSec == '4' ? 'BIST:CMBTN' : grupSec == '5' ? 'BIST:ECILC' : grupSec == '6' ? 'BIST:FLAP' : grupSec == '7' ? 'BIST:HEDEF' : grupSec == '8' ? 'BIST:ISSEN' : grupSec == '9' ? 'BIST:KOZAL' : grupSec == '10' ? 'BIST:MEGAP' : grupSec == '11' ? 'BIST:ORMA' : grupSec == '12' ? 'BIST:PRZMA' : grupSec == '13' ? 'BIST:SKYMD' : grupSec == '14' ? 'BIST:TSGYO' : grupSec == '15' ? 'BIST:YGYO' : na
+a06 = grupSec == '1' ? 'BIST:AEFES' : grupSec == '2' ? 'BIST:ARSAN' : grupSec == '3' ? 'BIST:BINBN' : grupSec == '4' ? 'BIST:CMENT' : grupSec == '5' ? 'BIST:ECZYT' : grupSec == '6' ? 'BIST:FMIZP' : grupSec == '7' ? 'BIST:HEKTS' : grupSec == '8' ? 'BIST:ISYAT' : grupSec == '9' ? 'BIST:KRDMA' : grupSec == '10' ? 'BIST:MEGMT' : grupSec == '11' ? 'BIST:OSMEN' : grupSec == '12' ? 'BIST:PSDTC' : grupSec == '13' ? 'BIST:SMART' : grupSec == '14' ? 'BIST:TSKB' : grupSec == '15' ? 'BIST:YIGIT' : na
+a07 = grupSec == '1' ? 'BIST:AFYON' : grupSec == '2' ? 'BIST:ARTMS' : grupSec == '3' ? 'BIST:BINHO' : grupSec == '4' ? 'BIST:CONSE' : grupSec == '5' ? 'BIST:EDATA' : grupSec == '6' ? 'BIST:FONET' : grupSec == '7' ? 'BIST:HKTM' : grupSec == '8' ? 'BIST:IZENR' : grupSec == '9' ? 'BIST:KRDMB' : grupSec == '10' ? 'BIST:MEKAG' : grupSec == '11' ? 'BIST:OSTIM' : grupSec == '12' ? 'BIST:PSGYO' : grupSec == '13' ? 'BIST:SMRTG' : grupSec == '14' ? 'BIST:TSPOR' : grupSec == '15' ? 'BIST:YKBNK' : na
+a08 = grupSec == '1' ? 'BIST:AGESA' : grupSec == '2' ? 'BIST:ARZUM' : grupSec == '3' ? 'BIST:BIOEN' : grupSec == '4' ? 'BIST:COSMO' : grupSec == '5' ? 'BIST:EDIP' : grupSec == '6' ? 'BIST:FORMT' : grupSec == '7' ? 'BIST:HLGYO' : grupSec == '8' ? 'BIST:IZFAS' : grupSec == '9' ? 'BIST:KRDMD' : grupSec == '10' ? 'BIST:MEPET' : grupSec == '11' ? 'BIST:OTKAR' : grupSec == '12' ? 'BIST:QNBFK' : grupSec == '13' ? 'BIST:SNGYO' : grupSec == '14' ? 'BIST:TTKOM' : grupSec == '15' ? 'BIST:YKSLN' : na
+a09 = grupSec == '1' ? 'BIST:AGHOL' : grupSec == '2' ? 'BIST:ASELS' : grupSec == '3' ? 'BIST:BIZIM' : grupSec == '4' ? 'BIST:CRDFA' : grupSec == '5' ? 'BIST:EFORC' : grupSec == '6' ? 'BIST:FORTE' : grupSec == '7' ? 'BIST:HOROZ' : grupSec == '8' ? 'BIST:IZINV' : grupSec == '9' ? 'BIST:KRGYO' : grupSec == '10' ? 'BIST:MERCN' : grupSec == '11' ? 'BIST:OTTO' : grupSec == '12' ? 'BIST:QNBTR' : grupSec == '13' ? 'BIST:SNICA' : grupSec == '14' ? 'BIST:TTRAK' : grupSec == '15' ? 'BIST:YONGA' : na
+a10 = grupSec == '1' ? 'BIST:AGROT' : grupSec == '2' ? 'BIST:ASGYO' : grupSec == '3' ? 'BIST:BJKAS' : grupSec == '4' ? 'BIST:CRFSA' : grupSec == '5' ? 'BIST:EGEEN' : grupSec == '6' ? 'BIST:FRIGO' : grupSec == '7' ? 'BIST:HRKET' : grupSec == '8' ? 'BIST:IZMDC' : grupSec == '9' ? 'BIST:KRONT' : grupSec == '10' ? 'BIST:MERIT' : grupSec == '11' ? 'BIST:OYAKC' : grupSec == '12' ? 'BIST:QUAGR' : grupSec == '13' ? 'BIST:SNKRN' : grupSec == '14' ? 'BIST:TUCLK' : grupSec == '15' ? 'BIST:YUNSA' : na
+a11 = grupSec == '1' ? 'BIST:AGYO' : grupSec == '2' ? 'BIST:ASTOR' : grupSec == '3' ? 'BIST:BLCYT' : grupSec == '4' ? 'BIST:CUSAN' : grupSec == '5' ? 'BIST:EGEPO' : grupSec == '6' ? 'BIST:FROTO' : grupSec == '7' ? 'BIST:HTTBT' : grupSec == '8' ? 'BIST:JANTS' : grupSec == '9' ? 'BIST:KRPLS' : grupSec == '10' ? 'BIST:MERKO' : grupSec == '11' ? 'BIST:OYAYO' : grupSec == '12' ? 'BIST:RALYH' : grupSec == '13' ? 'BIST:SNPAM' : grupSec == '14' ? 'BIST:TUKAS' : grupSec == '15' ? 'BIST:YYAPI' : na
+a12 = grupSec == '1' ? 'BIST:AHGAZ' : grupSec == '2' ? 'BIST:ASUZU' : grupSec == '3' ? 'BIST:BMSCH' : grupSec == '4' ? 'BIST:CVKMD' : grupSec == '5' ? 'BIST:EGGUB' : grupSec == '6' ? 'BIST:FZLGY' : grupSec == '7' ? 'BIST:HUBVC' : grupSec == '8' ? 'BIST:KAPLM' : grupSec == '9' ? 'BIST:KRSTL' : grupSec == '10' ? 'BIST:METRO' : grupSec == '11' ? 'BIST:OYLUM' : grupSec == '12' ? 'BIST:RAYSG' : grupSec == '13' ? 'BIST:SODSN' : grupSec == '14' ? 'BIST:TUPRS' : grupSec == '15' ? 'BIST:YYLGD' : na
+a13 = grupSec == '1' ? 'BIST:AHSGY' : grupSec == '2' ? 'BIST:ATAGY' : grupSec == '3' ? 'BIST:BMSTL' : grupSec == '4' ? 'BIST:CWENE' : grupSec == '5' ? 'BIST:EGPRO' : grupSec == '6' ? 'BIST:GARAN' : grupSec == '7' ? 'BIST:HUNER' : grupSec == '8' ? 'BIST:KAREL' : grupSec == '9' ? 'BIST:KRTEK' : grupSec == '10' ? 'BIST:METUR' : grupSec == '11' ? 'BIST:OYYAT' : grupSec == '12' ? 'BIST:REEDR' : grupSec == '13' ? 'BIST:SOKE' : grupSec == '14' ? 'BIST:TUREX' : grupSec == '15' ? 'BIST:ZEDUR' : na
+a14 = grupSec == '1' ? 'BIST:AKBNK' : grupSec == '2' ? 'BIST:ATAKP' : grupSec == '3' ? 'BIST:BNTAS' : grupSec == '4' ? 'BIST:TRHOL' : grupSec == '5' ? 'BIST:EGSER' : grupSec == '6' ? 'BIST:GARFA' : grupSec == '7' ? 'BIST:HURGZ' : grupSec == '8' ? 'BIST:KARSN' : grupSec == '9' ? 'BIST:KRVGD' : grupSec == '10' ? 'BIST:MGROS' : grupSec == '11' ? 'BIST:OZATD' : grupSec == '12' ? 'BIST:RGYAS' : grupSec == '13' ? 'BIST:SOKM' : grupSec == '14' ? 'BIST:TURGG' : grupSec == '15' ? 'BIST:ZOREN' : na
+a15 = grupSec == '1' ? 'BIST:AKCNS' : grupSec == '2' ? 'BIST:ATATP' : grupSec == '3' ? 'BIST:BOBET' : grupSec == '4' ? 'BIST:DAGI' : grupSec == '5' ? 'BIST:EKGYO' : grupSec == '6' ? 'BIST:GEDIK' : grupSec == '7' ? 'BIST:ICBCT' : grupSec == '8' ? 'BIST:KARTN' : grupSec == '9' ? 'BIST:KSTUR' : grupSec == '10' ? 'BIST:MHRGY' : grupSec == '11' ? 'BIST:OZGYO' : grupSec == '12' ? 'BIST:RNPOL' : grupSec == '13' ? 'BIST:SONME' : grupSec == '14' ? 'BIST:TURSG' : grupSec == '15' ? 'BIST:ZRGYO' : na
+a16 = grupSec == '1' ? 'BIST:AKENR' : grupSec == '2' ? 'BIST:ATEKS' : grupSec == '3' ? 'BIST:BORLS' : grupSec == '4' ? 'BIST:TRHOL' : grupSec == '5' ? 'BIST:EKIZ' : grupSec == '6' ? 'BIST:GEDZA' : grupSec == '7' ? 'BIST:ICUGS' : grupSec == '8' ? 'BIST:KARYE' : grupSec == '9' ? 'BIST:KTLEV' : grupSec == '10' ? 'BIST:MIATK' : grupSec == '11' ? 'BIST:OZKGY' : grupSec == '12' ? 'BIST:RODRG' : grupSec == '13' ? 'BIST:SRVGY' : grupSec == '14' ? 'BIST:UFUK' : grupSec == '15' ? 'BIST:AKFIS' : na
+a17 = grupSec == '1' ? 'BIST:AKFGY' : grupSec == '2' ? 'BIST:ATLAS' : grupSec == '3' ? 'BIST:BORSK' : grupSec == '4' ? 'BIST:DARDL' : grupSec == '5' ? 'BIST:EKOS' : grupSec == '6' ? 'BIST:GENIL' : grupSec == '7' ? 'BIST:IDGYO' : grupSec == '8' ? 'BIST:KATMR' : grupSec == '9' ? 'BIST:KTSKR' : grupSec == '10' ? 'BIST:MMCAS' : grupSec == '11' ? 'BIST:OZRDN' : grupSec == '12' ? 'BIST:ROYAL' : grupSec == '13' ? 'BIST:SUMAS' : grupSec == '14' ? 'BIST:ULAS' : grupSec == '15' ? 'BIST:ARMGD' : na
+a18 = grupSec == '1' ? 'BIST:AKFYE' : grupSec == '2' ? 'BIST:ATSYH' : grupSec == '3' ? 'BIST:BOSSA' : grupSec == '4' ? 'BIST:DCTTR' : grupSec == '5' ? 'BIST:EKSUN' : grupSec == '6' ? 'BIST:GENTS' : grupSec == '7' ? 'BIST:IEYHO' : grupSec == '8' ? 'BIST:KAYSE' : grupSec == '9' ? 'BIST:KUTPO' : grupSec == '10' ? 'BIST:MNDRS' : grupSec == '11' ? 'BIST:OZSUB' : grupSec == '12' ? 'BIST:RTALB' : grupSec == '13' ? 'BIST:SUNTK' : grupSec == '14' ? 'BIST:ULKER' : grupSec == '15' ? 'BIST:BALSU' : na
+a19 = grupSec == '1' ? 'BIST:AKGRT' : grupSec == '2' ? 'BIST:AVGYO' : grupSec == '3' ? 'BIST:BRISA' : grupSec == '4' ? 'BIST:DENGE' : grupSec == '5' ? 'BIST:ELITE' : grupSec == '6' ? 'BIST:GEREL' : grupSec == '7' ? 'BIST:IHAAS' : grupSec == '8' ? 'BIST:KBORU' : grupSec == '9' ? 'BIST:KUVVA' : grupSec == '10' ? 'BIST:MNDTR' : grupSec == '11' ? 'BIST:OZYSR' : grupSec == '12' ? 'BIST:RUBNS' : grupSec == '13' ? 'BIST:SURGY' : grupSec == '14' ? 'BIST:ULUFA' : grupSec == '15' ? 'BIST:BESLR' : na
+a20 = grupSec == '1' ? 'BIST:AKMGY' : grupSec == '2' ? 'BIST:AVHOL' : grupSec == '3' ? 'BIST:BRKO' : grupSec == '4' ? 'BIST:DERHL' : grupSec == '5' ? 'BIST:EMKEL' : grupSec == '6' ? 'BIST:GESAN' : grupSec == '7' ? 'BIST:IHEVA' : grupSec == '8' ? 'BIST:KCAER' : grupSec == '9' ? 'BIST:KUYAS' : grupSec == '10' ? 'BIST:MOBTL' : grupSec == '11' ? 'BIST:PAGYO' : grupSec == '12' ? 'BIST:RYGYO' : grupSec == '13' ? 'BIST:SUWEN' : grupSec == '14' ? 'BIST:ULUSE' : grupSec == '15' ? 'BIST:DSTKF' : na
+a21 = grupSec == '1' ? 'BIST:AKSA' : grupSec == '2' ? 'BIST:AVOD' : grupSec == '3' ? 'BIST:BRKSN' : grupSec == '4' ? 'BIST:DERIM' : grupSec == '5' ? 'BIST:EMNIS' : grupSec == '6' ? 'BIST:GIPTA' : grupSec == '7' ? 'BIST:IHGZT' : grupSec == '8' ? 'BIST:KCHOL' : grupSec == '9' ? 'BIST:KZBGY' : grupSec == '10' ? 'BIST:MOGAN' : grupSec == '11' ? 'BIST:PAMEL' : grupSec == '12' ? 'BIST:RYSAS' : grupSec == '13' ? 'BIST:TABGD' : grupSec == '14' ? 'BIST:ULUUN' : grupSec == '15' ? 'BIST:GLRMK' : na
+a22 = grupSec == '1' ? 'BIST:AKSEN' : grupSec == '2' ? 'BIST:AVPGY' : grupSec == '3' ? 'BIST:BRKVY' : grupSec == '4' ? 'BIST:DESA' : grupSec == '5' ? 'BIST:ENERY' : grupSec == '6' ? 'BIST:GLBMD' : grupSec == '7' ? 'BIST:IHLAS' : grupSec == '8' ? 'BIST:KENT' : grupSec == '9' ? 'BIST:KZGYO' : grupSec == '10' ? 'BIST:MPARK' : grupSec == '11' ? 'BIST:PAPIL' : grupSec == '12' ? 'BIST:SAFKR' : grupSec == '13' ? 'BIST:TARKM' : grupSec == '14' ? 'BIST:UMPAS' : grupSec == '15' ? 'BIST:KLYPV' : na
+a23 = grupSec == '1' ? 'BIST:AKSGY' : grupSec == '2' ? 'BIST:AVTUR' : grupSec == '3' ? 'BIST:BRLSM' : grupSec == '4' ? 'BIST:DESPC' : grupSec == '5' ? 'BIST:ENJSA' : grupSec == '6' ? 'BIST:GLCVY' : grupSec == '7' ? 'BIST:IHLGM' : grupSec == '8' ? 'BIST:KERVN' : grupSec == '9' ? 'BIST:LIDER' : grupSec == '10' ? 'BIST:MRGYO' : grupSec == '11' ? 'BIST:PARSN' : grupSec == '12' ? 'BIST:SAHOL' : grupSec == '13' ? 'BIST:TATEN' : grupSec == '14' ? 'BIST:UNLU' : grupSec == '15' ? 'BIST:MOPAS' : na
+a24 = grupSec == '1' ? 'BIST:AKSUE' : grupSec == '2' ? 'BIST:AYCES' : grupSec == '3' ? 'BIST:BRMEN' : grupSec == '4' ? 'BIST:DEVA' : grupSec == '5' ? 'BIST:ENKAI' : grupSec == '6' ? 'BIST:GLRYH' : grupSec == '7' ? 'BIST:IHYAY' : grupSec == '8' ? 'BIST:LIDFA' : grupSec == '10' ? 'BIST:MRSHL' : grupSec == '11' ? 'BIST:PASEU' : grupSec == '12' ? 'BIST:SAMAT' : grupSec == '13' ? 'BIST:TATGD' : grupSec == '14' ? 'BIST:USAK' : grupSec == '15' ? 'BIST:A1YEN' : na
+a25 = grupSec == '1' ? 'BIST:AKYHO' : grupSec == '2' ? 'BIST:AYDEM' : grupSec == '3' ? 'BIST:BRSAN' : grupSec == '4' ? 'BIST:DGATE' : grupSec == '5' ? 'BIST:ENSRI' : grupSec == '6' ? 'BIST:GLYHO' : grupSec == '7' ? 'BIST:IMASM' : grupSec == '8' ? 'BIST:KFEIN' : grupSec == '9' ? 'BIST:LILAK' : grupSec == '10' ? 'BIST:MSGYO' : grupSec == '11' ? 'BIST:PATEK' : grupSec == '12' ? 'BIST:SANEL' : grupSec == '13' ? 'BIST:TAVHL' : grupSec == '14' ? 'BIST:VAKBN' : grupSec == '15' ? 'BIST:BIGEN' : na
+a26 = grupSec == '1' ? 'BIST:ALARK' : grupSec == '2' ? 'BIST:AYEN' : grupSec == '3' ? 'BIST:BRYAT' : grupSec == '4' ? 'BIST:DGGYO' : grupSec == '5' ? 'BIST:ENTRA' : grupSec == '6' ? 'BIST:GMTAS' : grupSec == '7' ? 'BIST:INDES' : grupSec == '8' ? 'BIST:KGYO' : grupSec == '9' ? 'BIST:LINK' : grupSec == '10' ? 'BIST:MTRKS' : grupSec == '11' ? 'BIST:PCILT' : grupSec == '12' ? 'BIST:SANFM' : grupSec == '13' ? 'BIST:TBORG' : grupSec == '14' ? 'BIST:VAKFN' : grupSec == '15' ? 'BIST:BULGS' : na
+a27 = grupSec == '1' ? 'BIST:ALBRK' : grupSec == '2' ? 'BIST:AYES' : grupSec == '3' ? 'BIST:BSOKE' : grupSec == '4' ? 'BIST:DGNMO' : grupSec == '5' ? 'BIST:EPLAS' : grupSec == '6' ? 'BIST:GOKNR' : grupSec == '7' ? 'BIST:INFO' : grupSec == '8' ? 'BIST:KIMMR' : grupSec == '9' ? 'BIST:LKMNH' : grupSec == '10' ? 'BIST:MTRYO' : grupSec == '11' ? 'BIST:TEHOL' : grupSec == '12' ? 'BIST:SANKO' : grupSec == '13' ? 'BIST:TCELL' : grupSec == '14' ? 'BIST:VAKKO' : grupSec == '15' ? 'BIST:CGCAM' : na
+a28 = grupSec == '1' ? 'BIST:ALCAR' : grupSec == '2' ? 'BIST:AYGAZ' : grupSec == '3' ? 'BIST:BTCIM' : grupSec == '4' ? 'BIST:DIRIT' : grupSec == '5' ? 'BIST:ERBOS' : grupSec == '6' ? 'BIST:GOLTS' : grupSec == '7' ? 'BIST:INGRM' : grupSec == '8' ? 'BIST:KLGYO' : grupSec == '9' ? 'BIST:LMKDC' : grupSec == '10' ? 'BIST:MZHLD' : grupSec == '11' ? 'BIST:PEKGY' : grupSec == '12' ? 'BIST:SARKY' : grupSec == '13' ? 'BIST:TCKRC' : grupSec == '14' ? 'BIST:VANGD' : grupSec == '15' ? 'BIST:EGEGY' : na
+a29 = grupSec == '1' ? 'BIST:ALCTL' : grupSec == '2' ? 'BIST:AZTEK' : grupSec == '3' ? 'BIST:BUCIM' : grupSec == '4' ? 'BIST:DITAS' : grupSec == '5' ? 'BIST:ERCB' : grupSec == '6' ? 'BIST:GOODY' : grupSec == '7' ? 'BIST:INTEK' : grupSec == '8' ? 'BIST:KLKIM' : grupSec == '9' ? 'BIST:LOGO' : grupSec == '10' ? 'BIST:NATEN' : grupSec == '11' ? 'BIST:PENGD' : grupSec == '12' ? 'BIST:SASA' : grupSec == '13' ? 'BIST:TDGYO' : grupSec == '14' ? 'BIST:VBTYZ' : grupSec == '15' ? 'BIST:ENDAE' : na
+a30 = grupSec == '1' ? 'BIST:ALFAS' : grupSec == '2' ? 'BIST:BAGFS' : grupSec == '3' ? 'BIST:BURCE' : grupSec == '4' ? 'BIST:DMRGD' : grupSec == '5' ? 'BIST:EREGL' : grupSec == '6' ? 'BIST:GOZDE' : grupSec == '7' ? 'BIST:INTEM' : grupSec == '8' ? 'BIST:KLMSN' : grupSec == '9' ? 'BIST:LRSHO' : grupSec == '10' ? 'BIST:NETAS' : grupSec == '11' ? 'BIST:PENTA' : grupSec == '12' ? 'BIST:SAYAS' : grupSec == '13' ? 'BIST:TEKTU' : grupSec == '14' ? 'BIST:VERTU' : grupSec == '15' ? 'BIST:RUZYE' : na
+a31 = grupSec == '1' ? 'BIST:ALGYO' : grupSec == '2' ? 'BIST:BAHKM' : grupSec == '3' ? 'BIST:BURVA' : grupSec == '4' ? 'BIST:DMSAS' : grupSec == '5' ? 'BIST:ERSU' : grupSec == '6' ? 'BIST:GRNYO' : grupSec == '7' ? 'BIST:INVEO' : grupSec == '8' ? 'BIST:KLNMA' : grupSec == '9' ? 'BIST:LUKSK' : grupSec == '10' ? 'BIST:NIBAS' : grupSec == '11' ? 'BIST:PETKM' : grupSec == '12' ? 'BIST:SDTTR' : grupSec == '13' ? 'BIST:TERA' : grupSec == '14' ? 'BIST:VERUS' : grupSec == '15' ? 'BIST:SERNT' : na
+a32 = grupSec == '1' ? 'BIST:ALKA' : grupSec == '2' ? 'BIST:BAKAB' : grupSec == '3' ? 'BIST:BVSAN' : grupSec == '4' ? 'BIST:DNISI' : grupSec == '5' ? 'BIST:ESCAR' : grupSec == '6' ? 'BIST:GRSEL' : grupSec == '7' ? 'BIST:INVES' : grupSec == '8' ? 'BIST:KLRHO' : grupSec == '9' ? 'BIST:LYDHO' : grupSec == '10' ? 'BIST:NTGAZ' : grupSec == '11' ? 'BIST:PETUN' : grupSec == '12' ? 'BIST:SEGMN' : grupSec == '13' ? 'BIST:TEZOL' : grupSec == '14' ? 'BIST:VESBE' : grupSec == '15' ? 'BIST:SMRVA' : na
+a33 = grupSec == '1' ? 'BIST:ALKIM' : grupSec == '2' ? 'BIST:BALAT' : grupSec == '3' ? 'BIST:BYDNR' : grupSec == '4' ? 'BIST:DOAS' : grupSec == '5' ? 'BIST:ESCOM' : grupSec == '6' ? 'BIST:GRTHO' : grupSec == '7' ? 'BIST:IPEKE' : grupSec == '8' ? 'BIST:KLSER' : grupSec == '9' ? 'BIST:LYDYE' : grupSec == '10' ? 'BIST:NTHOL' : grupSec == '11' ? 'BIST:PGSUS' : grupSec == '12' ? 'BIST:SEGYO' : grupSec == '13' ? 'BIST:TGSAS' : grupSec == '14' ? 'BIST:VESTL' : grupSec == '15' ? 'BIST:VSNMD' : na
+a34 = grupSec == '1' ? 'BIST:ALKLC' : grupSec == '2' ? 'BIST:BANVT' : grupSec == '3' ? 'BIST:CANTE' : grupSec == '4' ? 'BIST:DOBUR' : grupSec == '5' ? 'BIST:ESEN' : grupSec == '6' ? 'BIST:GSDDE' : grupSec == '7' ? 'BIST:ISATR' : grupSec == '8' ? 'BIST:KLSYN' : grupSec == '9' ? 'BIST:MAALT' : grupSec == '10' ? 'BIST:NUGYO' : grupSec == '11' ? 'BIST:PINSU' : grupSec == '12' ? 'BIST:SEKFK' : grupSec == '13' ? 'BIST:THYAO' : grupSec == '14' ? 'BIST:VKFYO' : na
+a35 = grupSec == '1' ? 'BIST:ALMAD' : grupSec == '2' ? 'BIST:BARMA' : grupSec == '3' ? 'BIST:CASA' : grupSec == '4' ? 'BIST:DOCO' : grupSec == '5' ? 'BIST:ETILR' : grupSec == '6' ? 'BIST:GSDHO' : grupSec == '7' ? 'BIST:ISBIR' : grupSec == '8' ? 'BIST:KMPUR' : grupSec == '9' ? 'BIST:MACKO' : grupSec == '10' ? 'BIST:NUHCM' : grupSec == '11' ? 'BIST:PKART' : grupSec == '12' ? 'BIST:SEKUR' : grupSec == '13' ? 'BIST:TKFEN' : grupSec == '14' ? 'BIST:VKGYO' : na
+a36 = grupSec == '1' ? 'BIST:ALTNY' : grupSec == '2' ? 'BIST:BASCM' : grupSec == '3' ? 'BIST:CATES' : grupSec == '4' ? 'BIST:DOFER' : grupSec == '5' ? 'BIST:ETYAT' : grupSec == '6' ? 'BIST:GSRAY' : grupSec == '7' ? 'BIST:ISBTR' : grupSec == '8' ? 'BIST:KNFRT' : grupSec == '9' ? 'BIST:MAGEN' : grupSec == '10' ? 'BIST:OBAMS' : grupSec == '11' ? 'BIST:PKENT' : grupSec == '12' ? 'BIST:SELEC' : grupSec == '13' ? 'BIST:TKNSA' : grupSec == '14' ? 'BIST:VKING' : na
+a37 = grupSec == '1' ? 'BIST:ALVES' : grupSec == '2' ? 'BIST:BASGZ' : grupSec == '3' ? 'BIST:CCOLA' : grupSec == '4' ? 'BIST:DOGUB' : grupSec == '5' ? 'BIST:EUHOL' : grupSec == '6' ? 'BIST:GUBRF' : grupSec == '7' ? 'BIST:ISCTR' : grupSec == '8' ? 'BIST:KOCMT' : grupSec == '9' ? 'BIST:MAKIM' : grupSec == '10' ? 'BIST:OBASE' : grupSec == '11' ? 'BIST:PLTUR' : grupSec == '12' ? 'BIST:SELGD' : grupSec == '13' ? 'BIST:TLMAN' : grupSec == '14' ? 'BIST:VRGYO' : na
+a38 = grupSec == '1' ? 'BIST:ANELE' : grupSec == '2' ? 'BIST:BAYRK' : grupSec == '3' ? 'BIST:CELHA' : grupSec == '4' ? 'BIST:DOHOL' : grupSec == '5' ? 'BIST:EUKYO' : grupSec == '6' ? 'BIST:GUNDG' : grupSec == '7' ? 'BIST:ISDMR' : grupSec == '8' ? 'BIST:KONKA' : grupSec == '9' ? 'BIST:MAKTK' : grupSec == '10' ? 'BIST:ODAS' : grupSec == '11' ? 'BIST:PNLSN' : grupSec == '12' ? 'BIST:SELVA' : grupSec == '13' ? 'BIST:TMPOL' : grupSec == '14' ? 'BIST:YAPRK' : na
+a39 = grupSec == '1' ? 'BIST:ANGEN' : grupSec == '2' ? 'BIST:BEGYO' : grupSec == '3' ? 'BIST:CEMAS' : grupSec == '4' ? 'BIST:DOKTA' : grupSec == '5' ? 'BIST:EUPWR' : grupSec == '6' ? 'BIST:GWIND' : grupSec == '7' ? 'BIST:ISFIN' : grupSec == '8' ? 'BIST:KONTR' : grupSec == '9' ? 'BIST:MANAS' : grupSec == '10' ? 'BIST:ODINE' : grupSec == '11' ? 'BIST:PNSUT' : grupSec == '12' ? 'BIST:SEYKM' : grupSec == '13' ? 'BIST:TMSN' : grupSec == '14' ? 'BIST:YATAS' : na
+a40 = grupSec == '1' ? 'BIST:ANHYT' : grupSec == '2' ? 'BIST:BERA' : grupSec == '3' ? 'BIST:CEMTS' : grupSec == '4' ? 'BIST:DURDO' : grupSec == '5' ? 'BIST:EUREN' : grupSec == '6' ? 'BIST:GZNMI' : grupSec == '7' ? 'BIST:ISGSY' : grupSec == '8' ? 'BIST:KONYA' : grupSec == '9' ? 'BIST:MARBL' : grupSec == '10' ? 'BIST:OFSYM' : grupSec == '11' ? 'BIST:POLHO' : grupSec == '12' ? 'BIST:SILVR' : grupSec == '13' ? 'BIST:TNZTP' : grupSec == '14' ? 'BIST:YAYLA' : na
 
 
-[v1,s1] = request.security(a01, per, func())
-[v2,s2] = request.security(a02, per, func())
-[v3,s3] = request.security(a03, per, func())
-[v4,s4] = request.security(a04, per, func())
-[v5,s5] = request.security(a05, per, func())
-[v6,s6] = request.security(a06, per, func())
-[v7,s7] = request.security(a07, per, func())
-[v8,s8] = request.security(a08, per, func())
-[v9,s9] = request.security(a09, per, func())
-[v10,s10] = request.security(a10, per, func())
-[v11,s11] = request.security(a11, per, func())
-[v12,s12] = request.security(a12, per, func())
-[v13,s13] = request.security(a13, per, func())
-[v14,s14] = request.security(a14, per, func())
-[v15,s15] = request.security(a15, per, func())
-[v16,s16] = request.security(a16, per, func())
-[v17,s17] = request.security(a17, per, func())
-[v18,s18] = request.security(a18, per, func())
-[v19,s19] = request.security(a19, per, func())
-[v20,s20] = request.security(a20, per, func())
-[v21,s21] = request.security(a21, per, func())
-[v22,s22] = request.security(a22, per, func())
-[v23,s23] = request.security(a23, per, func())
-[v24,s24] = request.security(a24, per, func())
-[v25,s25] = request.security(a25, per, func())
-[v26,s26] = request.security(a26, per, func())
-[v27,s27] = request.security(a27, per, func())
-[v28,s28] = request.security(a28, per, func())
-[v29,s29] = request.security(a29, per, func())
-[v30,s30] = request.security(a30, per, func())
-[v31,s31] = request.security(a31, per, func())
-[v32,s32] = request.security(a32, per, func())
-[v33,s33] = request.security(a33, per, func())
-[v34,s34] = request.security(a34, per, func())
-[v35,s35] = request.security(a35, per, func())
-[v36,s36] = request.security(a36, per, func())
-[v37,s37] = request.security(a37, per, func())
-[v38,s38] = request.security(a38, per, func())
-[v39,s39] = request.security(a39, per, func())
-[v40,s40] = request.security(a40, per, func())
+[v1, s1] = request.security(a01, per, func())
+[v2, s2] = request.security(a02, per, func())
+[v3, s3] = request.security(a03, per, func())
+[v4, s4] = request.security(a04, per, func())
+[v5, s5] = request.security(a05, per, func())
+[v6, s6] = request.security(a06, per, func())
+[v7, s7] = request.security(a07, per, func())
+[v8, s8] = request.security(a08, per, func())
+[v9, s9] = request.security(a09, per, func())
+[v10, s10] = request.security(a10, per, func())
+[v11, s11] = request.security(a11, per, func())
+[v12, s12] = request.security(a12, per, func())
+[v13, s13] = request.security(a13, per, func())
+[v14, s14] = request.security(a14, per, func())
+[v15, s15] = request.security(a15, per, func())
+[v16, s16] = request.security(a16, per, func())
+[v17, s17] = request.security(a17, per, func())
+[v18, s18] = request.security(a18, per, func())
+[v19, s19] = request.security(a19, per, func())
+[v20, s20] = request.security(a20, per, func())
+[v21, s21] = request.security(a21, per, func())
+[v22, s22] = request.security(a22, per, func())
+[v23, s23] = request.security(a23, per, func())
+[v24, s24] = request.security(a24, per, func())
+[v25, s25] = request.security(a25, per, func())
+[v26, s26] = request.security(a26, per, func())
+[v27, s27] = request.security(a27, per, func())
+[v28, s28] = request.security(a28, per, func())
+[v29, s29] = request.security(a29, per, func())
+[v30, s30] = request.security(a30, per, func())
+[v31, s31] = request.security(a31, per, func())
+[v32, s32] = request.security(a32, per, func())
+[v33, s33] = request.security(a33, per, func())
+[v34, s34] = request.security(a34, per, func())
+[v35, s35] = request.security(a35, per, func())
+[v36, s36] = request.security(a36, per, func())
+[v37, s37] = request.security(a37, per, func())
+[v38, s38] = request.security(a38, per, func())
+[v39, s39] = request.security(a39, per, func())
+[v40, s40] = request.security(a40, per, func())
 
 roundn(x, n) =>
     mult = 1
     if n != 0
         for i = 1 to math.abs(n) by 1
-            mult *= 10
+            mult := mult * 10
             mult
 
     n >= 0 ? math.round(x * mult) / mult : math.round(x / mult) * mult
@@ -202,13 +202,13 @@ scr_label := s38 ? scr_label + syminfo.ticker(a38) + ' ' + str.tostring(roundn(v
 scr_label := s39 ? scr_label + syminfo.ticker(a39) + ' ' + str.tostring(roundn(v39, 2)) + '\n' : scr_label
 scr_label := s40 ? scr_label + syminfo.ticker(a40) + ' ' + str.tostring(roundn(v40, 2)) + '\n' : scr_label
 
-var panel =table.new(position = position.top_right,columns = 10,rows=10,bgcolor = color.green,frame_color = color.black,border_color = color.red)
+var panel = table.new(position = position.top_right, columns = 10, rows = 10, bgcolor = color.green, frame_color = color.black, border_color = color.red)
 
 //lab_1 = label.new(bar_index + loc,50, scr_label, color=color.green, textcolor=color.white, style=label.style_label_center)
 //label.delete(lab_1[1])
 if barstate.islast
-    table.cell(panel,0,0,text = str.tostring(scr_label))
+    table.cell(panel, 0, 0, text = str.tostring(scr_label))
 
 if str.length(scr_label) > 8
-    alert(scr_label,alert.freq_once_per_bar_close)
+    alert(scr_label, alert.freq_once_per_bar_close)
 //------------------------------------------------------
