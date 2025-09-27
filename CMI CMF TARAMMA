@@ -31,7 +31,7 @@ hline(0, color = color.gray, title = 'Zero_MF', linestyle = hline.style_dashed)
 
 
 cmi = 0.20
-cmf = 0.49
+cmf = 0.30
 
 //If current bar open is less than equal to the previous bar close AND current bar open is less than previous bar open AND current bar close is greater than previous bar open THEN True
 
@@ -59,7 +59,7 @@ per = input.timeframe(defval = '', title = 'PERİYOT', group = 'Tarama yapmak is
 
 func() =>
 
-    cond = conditionCmf 
+    cond = conditionCmf and conditionCmi
 
     [close, cond]
 
