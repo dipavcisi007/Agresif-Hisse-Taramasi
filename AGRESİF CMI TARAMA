@@ -203,7 +203,7 @@ s35 = input.symbol(title='35', defval='HOROZ')
 s36 = input.symbol(title='36', defval='KOTON')
 s37 = input.symbol(title='37', defval='LILAK')
 s38 = input.symbol(title='38', defval='SEGMN')
-s39 = input.symbol(title='39', defval='EFORC')
+ 
 s40 = input.symbol(title='40', defval='ALTNY')
 /////////////////
 
@@ -246,7 +246,7 @@ a35 = grupSec == '1' ? 'BIST:ALVES' : grupSec == '2' ? 'BIST:BAYRK' : grupSec ==
 a36 = grupSec == '1' ? 'BIST:ANELE' : grupSec == '2' ? 'BIST:BEGYO' : grupSec == '3' ? 'BIST:CASA' : grupSec == '4' ? 'BIST:DOGUB' : grupSec == '5' ? 'BIST:EUREN' : grupSec == '6' ? 'BIST:HALKB' : grupSec == '7' ? 'BIST:ISMEN' : grupSec == '8' ? 'BIST:KRDMB' : grupSec == '9' ? 'BIST:MERIT' : grupSec == '10' ? 'BIST:OYAYO' : grupSec == '11' ? 'BIST:REEDR' : grupSec == '12' ? 'BIST:SRVGY' : grupSec == '13' ? 'BIST:UFUK' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? s36 : na
 a37 = grupSec == '1' ? 'BIST:ANGEN' : grupSec == '2' ? 'BIST:BERA' : grupSec == '3' ? 'BIST:CATES' : grupSec == '4' ? 'BIST:DOHOL' : grupSec == '5' ? 'BIST:EUYO' : grupSec == '6' ? 'BIST:HATEK' : grupSec == '7' ? 'BIST:ISSEN' : grupSec == '8' ? 'BIST:KRDMD' : grupSec == '9' ? 'BIST:MERKO' : grupSec == '10' ? 'BIST:OYLUM' : grupSec == '11' ? 'BIST:RNPOL' : grupSec == '12' ? 'BIST:SUMAS' : grupSec == '13' ? 'BIST:ULAS' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? s37 : na
 a388 = grupSec == '1' ? 'BIST:ANHYT' : grupSec == '2' ? 'BIST:BEYAZ' : grupSec == '3' ? 'BIST:CCOLA' : grupSec == '4' ? 'BIST:DOKTA' : grupSec == '5' ? 'BIST:EYGYO' : grupSec == '6' ? 'BIST:HATSN' : grupSec == '7' ? 'BIST:IZENR' : grupSec == '8' ? 'BIST:KRGYO' : grupSec == '9' ? 'BIST:METRO' : grupSec == '10' ? 'BIST:OYYAT' : grupSec == '11' ? 'BIST:RODRG' : grupSec == '12' ? 'BIST:SUNTK' : grupSec == '13' ? 'BIST:ULKER' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? s38 : na
-a39 = grupSec == '1' ? 'BIST:ANSGR' : grupSec == '2' ? 'BIST:BFREN' : grupSec == '3' ? 'BIST:CELHA' : grupSec == '4' ? 'BIST:DURDO' : grupSec == '5' ? 'BIST:FADE' : grupSec == '6' ? 'BIST:HDFGS' : grupSec == '7' ? 'BIST:IZFAS' : grupSec == '8' ? 'BIST:KRONT' :                                     grupSec == '10' ? 'BIST:OZGYO' : grupSec == '11' ? 'BIST:RTALB' : grupSec == '12' ? 'BIST:SURGY' : grupSec == '13' ? 'BIST:ULUFA' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? s39 : na
+a39 = grupSec == '1' ? 'BIST:ANSGR' : grupSec == '2' ? 'BIST:BFREN' : grupSec == '3' ? 'BIST:CELHA' : grupSec == '4' ? 'BIST:DURDO' : grupSec == '5' ? 'BIST:FADE' : grupSec == '6' ? 'BIST:HDFGS' : grupSec == '7' ? 'BIST:IZFAS' : grupSec == '8' ? 'BIST:KRONT' :                                     grupSec == '10' ? 'BIST:OZGYO' : grupSec == '11' ? 'BIST:RTALB' : grupSec == '12' ? 'BIST:SURGY' : grupSec == '13' ? 'BIST:ULUFA' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? '' : na
 a40 = grupSec == '1' ? 'BIST:ARASE' : grupSec == '2' ? 'BIST:BIENY' : grupSec == '3' ? 'BIST:CEMAS' : grupSec == '4' ? 'BIST:DYOBY' : grupSec == '5' ? 'BIST:FENER' : grupSec == '6' ? 'BIST:HEDEF' : grupSec == '7' ? 'BIST:IZINV' : grupSec == '8' ? 'BIST:KRPLS' : grupSec == '9' ? 'BIST:MGROS' : grupSec == '10' ? 'BIST:OZKGY' : grupSec == '11' ? 'BIST:RUBNS' : grupSec == '12' ? 'BIST:SUWEN' : grupSec == '13' ? 'BIST:ULUSE' : grupSec == '14' ? '' : grupSec == 'ÖZEL LİSTE' ? s40 : na
 
 ////////////////////
