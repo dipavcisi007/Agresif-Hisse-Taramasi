@@ -1,0 +1,99 @@
+//@version=4
+study(title="CMI CMF RSI (MF Divergence)", shorttitle="CMI CMF MF-Div", format=format.price, precision=4, overlay=false)
+
+//-------------------------
+// ORİJİNAL CMI CMF RSI
+//-------------------------
+length1 = input(14, title="RSI Length", minval=1)
+length  = input(20, title="CMF Length", minval=1)
+
+price = close
+
+// MI (yeşil)
+ad  = close==high and close==low or high==low ? 0 : ((close-open)/(high-low))*volume
+mf  = sum(ad, length) / sum(volume, length)
+vrsi  = rsi(price, length1)
+crsi  = vrsi/500
+crsis = mf-crsi+0.1
+plot(crsis, color=#43A047, title="MI")
+hline(0, color=#787B86, title="Zero", linestyle=hline.style_dashed)
+
+// MF (kırmızı)
+ad1 = close==high and close==low or high==low ? 0 : ((2*close-low-high)/(high-low))*volume
+mf1 = sum(ad1, length) / sum(volume, length)
+plot(mf1, color=#dd1a0c, title="MF")
+hline(0, color=#787B86, title="Zero (MF)", linestyle=hline.style_dashed)
+
+
+//==================================================
+// UYUMSUZLUKLAR (SADECE MF ÜZERİNDEN)  <<< ÖNEMLİ
+//==================================================
+osc = mf1   // Divergence kaynağı: MF
+
+lbR = input(5,  title="Pivot Lookback Right", minval=1)
+lbL = input(5,  title="Pivot Lookback Left",  minval=1)
+rangeUpper = input(60, title="Max Lookback Range", minval=1)
+rangeLower = input(5,  title="Min Lookback Range", minval=1)
+
+plotBull       = input(true,  title="Pozitif uyumsuzluk (PU)")
+plotHiddenBull = input(true,  title="Gizli pozitif uyumsuzluk (GPU)")
+plotBear       = input(true,  title="Negatif uyumsuzluk (NU)")
+plotHiddenBear = input(true,  title="Gizli negatif uyumsuzluk (GNU)")
+
+bearColor       = color.red
+bullColor       = color.navy
+hiddenBullColor = color.olive
+hiddenBearColor = color.red   // GNU'yu kırmızı istedin
+textColor       = color.white
+noneColor       = color.new(color.white, 100)
+
+plFound = pivotlow(osc, lbL, lbR)
+phFound = pivothigh(osc, lbL, lbR)
+
+_inRange(cond) =>
+    bars = barssince(cond)
+    rangeLower <= bars and bars <= rangeUpper
+
+
+//-------------------------
+// PU: Regular Bullish (Fiyat LL, MF HL)
+//-------------------------
+oscHL   = osc[lbR] > valuewhen(plFound, osc[lbR], 1) and _inRange(plFound[1])
+priceLL = low[lbR] < valuewhen(plFound, low[lbR], 1)
+bullCond = plotBull and priceLL and oscHL and plFound
+
+plot(plFound ? osc[lbR] : na, offset=-lbR, linewidth=2, color=(bullCond ? bullColor : noneColor), title="PU Line")
+plotshape(bullCond ? osc[lbR] : na, offset=-lbR, text="PU", style=shape.labelup, location=location.absolute, color=bullColor, textcolor=textColor, transp=0)
+
+
+//-------------------------
+// GPU: Hidden Bullish (Fiyat HL, MF LL)
+//-------------------------
+oscLL   = osc[lbR] < valuewhen(plFound, osc[lbR], 1) and _inRange(plFound[1])
+priceHL = low[lbR] > valuewhen(plFound, low[lbR], 1)
+hiddenBullCond = plotHiddenBull and priceHL and oscLL and plFound
+
+plot(plFound ? osc[lbR] : na, offset=-lbR, linewidth=2, color=(hiddenBullCond ? hiddenBullColor : noneColor), title="GPU Line")
+plotshape(hiddenBullCond ? osc[lbR] : na, offset=-lbR, text="GPU", style=shape.labelup, location=location.absolute, color=hiddenBullColor, textcolor=textColor, transp=0)
+
+
+//-------------------------
+// NU: Regular Bearish (Fiyat HH, MF LH)
+//-------------------------
+oscLH   = osc[lbR] < valuewhen(phFound, osc[lbR], 1) and _inRange(phFound[1])
+priceHH = high[lbR] > valuewhen(phFound, high[lbR], 1)
+bearCond = plotBear and priceHH and oscLH and phFound
+
+plot(phFound ? osc[lbR] : na, offset=-lbR, linewidth=2, color=(bearCond ? bearColor : noneColor), title="NU Line")
+plotshape(bearCond ? osc[lbR] : na, offset=-lbR, text="NU", style=shape.labeldown, location=location.absolute, color=bearColor, textcolor=textColor, transp=0)
+
+
+//-------------------------
+// GNU: Hidden Bearish (Fiyat LH, MF HH)  <<< KIRMIZI DEVAM SİNYALİ
+//-------------------------
+oscHH   = osc[lbR] > valuewhen(phFound, osc[lbR], 1) and _inRange(phFound[1])
+priceLH = high[lbR] < valuewhen(phFound, high[lbR], 1)
+hiddenBearCond = plotHiddenBear and priceLH and oscHH and phFound
+
+plot(phFound ? osc[lbR] : na, offset=-lbR, linewidth=2, color=(hiddenBearCond ? hiddenBearColor : noneColor), title="GNU Line")
+plotshape(hiddenBearCond ? osc[lbR] : na, offset=-lbR, text="GNU", style=shape.labeldown, location=location.absolute, color=color.red, textcolor=textColor, transp=0)
